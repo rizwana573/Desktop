@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modal Gallery Example</title>
+
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+  </head>
+  <body>
+    <script>
+      // let items = [
+      //   {
+      //     id: 1,
+      //     thumbnail: "https://placehold.co/200x200?text=image1",
+      //     image: "https://placehold.co/400x400?text=image1",
+      //   },
+      //   {
+      //     id: 2,
+      //     thumbnail: "https://placehold.co/200x200?text=image2",
+      //     image: "https://placehold.co/400x400?text=image2",
+      //   },
+      //   {
+      //     id: 3,
+      //     thumbnail: "https://placehold.co/200x200?text=image3",
+      //     image: "https://placehold.co/400x400?text=image3",
+      //   },
+      //   {
+      //     id: 4,
+      //     thumbnail: "https://placehold.co/200x200?text=image4",
+      //     image: "https://placehold.co/400x400?text=image4",
+      //   },
+      //   {
+      //     id: 5,
+      //     thumbnail: "https://placehold.co/200x200?text=image5",
+      //     image: "https://placehold.co/400x400?text=image5",
+      //   },
+      //   {
+      //     id: 6,
+      //     thumbnail: "https://placehold.co/200x200?text=image6",
+      //     image: "https://placehold.co/400x400?text=image6",
+      //   },
+      //   {
+      //     id: 7,
+      //     thumbnail: "https://placehold.co/200x200?text=image7",
+      //     image: "https://placehold.co/400x400?text=image7",
+      //   },
+      //   {
+      //     id: 8,
+      //     thumbnail: "https://placehold.co/200x200?text=image8",
+      //     image: "https://placehold.co/400x400?text=image8",
+      //   },
+      //   {
+      //     id: 9,
+      //     thumbnail: "https://placehold.co/200x200?text=image9",
+      //     image: "https://placehold.co/400x400?text=image9",
+      //   },
+      //   {
+      //     id: 10,
+      //     thumbnail: "https://placehold.co/200x200?text=image10",
+      //     image: "https://placehold.co/400x400?text=image10",
+      //   },
+      // ];
+    </script>
+    <div
+      x-data='{
+        isOpen: false,
+        currentImage: "",
+        currentIndex: 0,
+        items : [
+        {
+          id: 1,
+          thumbnail: "https://placehold.co/200x200?text=image1",
+          image: "https://placehold.co/400x400?text=image1",
+        },
+        {
+          id: 2,
+          thumbnail: "https://placehold.co/200x200?text=image2",
+          image: "https://placehold.co/400x400?text=image2",
+        },
+        {
+          id: 3,
+          thumbnail: "https://placehold.co/200x200?text=image3",
+          image: "https://placehold.co/400x400?text=image3",
+        },
+        {
+          id: 4,
+          thumbnail: "https://placehold.co/200x200?text=image4",
+          image: "https://placehold.co/400x400?text=image4",
+        },
+        {
+          id: 5,
+          thumbnail: "https://placehold.co/200x200?text=image5",
+          image: "https://placehold.co/400x400?text=image5",
+        },
+        {
+          id: 6,
+          thumbnail: "https://placehold.co/200x200?text=image6",
+          image: "https://placehold.co/400x400?text=image6",
+        },
+        {
+          id: 7,
+          thumbnail: "https://placehold.co/200x200?text=image7",
+          image: "https://placehold.co/400x400?text=image7",
+        },
+        {
+          id: 8,
+          thumbnail: "https://placehold.co/200x200?text=image8",
+          image: "https://placehold.co/400x400?text=image8",
+        },
+        {
+          id: 9,
+          thumbnail: "https://placehold.co/200x200?text=image9",
+          image: "https://placehold.co/400x400?text=image9",
+        },
+        {
+          id: 10,
+          thumbnail: "https://placehold.co/200x200?text=image10",
+          image: "https://placehold.co/400x400?text=image10",
+        }],
+        openModal(index) {
+            this.isOpen = true;
+            this.currentIndex = index;
+            this.currentImage = this.items[index].image;
+        },
+        closeModal() {
+            this.isOpen = false;
+        },  
+        nextImage() {
+            this.currentIndex = (this.currentIndex + 1) % this.items.length;
+            this.currentImage = this.items[this.currentIndex].image;
+        },
+        prevImage() {
+            this.currentIndex = (this.currentIndex - 1 + this.items.length) % this.items.length;
+            this.currentImage = this.items[this.currentIndex].image;
+        } 
+    }'
+    >
+      <h1><marquee>Grid of images</marquee></h1>
+      <div class="image-grid">
+        <template x-for="(item, index) in items" :key="item.id">
+          <div @click="openModal(index)" class="grid-item cursor-pointer">
+            <img :src="item.thumbnail" alt="Image Thumbnail" />
+          </div>
+        </template>
+      </div>
+
+      <!-- Modal Dialog -->
+      <div x-show="isOpen" @click="closeModal" class="modal">
+        <!-- Modal Content -->
+        <div class="modal-content" @click.stop>
+          <span @click="prevImage" class="prev-modal cursor-pointer"><< </span>
+          <span @click="closeModal" class="close-modal cursor-pointer">X</span>
+          <span @click="nextImage" class="next-modal cursor-pointer">>></span>
+          <img :src="currentImage" alt="Modal Image" />
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("alpine:init", () => {
+        Alpine.data("app", () => ({
+          isOpen: false,
+          currentImage: "",
+        }));
+      });
+    </script>
+    <style>
+      /* Style for the modal and modal content */
+      .modal {
+        /* display: none; */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+
+      .modal-content {
+        position: absolute;
+        margin: 5% auto;
+        padding: 5vw;
+        background-color: #fff;
+        text-align: center;
+        max-width: 75vw;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        transform: translate(-50%, -50%);
+      }
+      .prev-modal,
+      .next-modal {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        padding: 10px;
+        cursor: pointer;
+        font-weight: 900;
+        font-family: sans-serif;
+      }
+
+      .prev-modal {
+        left: 0;
+      }
+
+      .next-modal {
+        right: 0;
+      }
+      .close-modal {
+        position: absolute;
+        font-family: sans-serif;
+        top: 0;
+        right: 0;
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      /* Style for the image grid */
+      .image-grid {
+        display: grid;
+        grid-template-columns: auto;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 30px;
+        text-align: center;
+        justify-content: center;
+        margin: 20px auto 0;
+      }
+
+      .grid-item {
+        cursor: pointer;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+      @media only screen and (min-width: 768px) {
+        .image-grid {
+          grid-template-columns: auto auto auto auto;
+        }
+        .modal-content {
+          max-width: 50vw;
+        }
+      }
+    </style>
+  </body>
+</html>
